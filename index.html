@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Herramientas para docentes — Héctor Escamilla</title>
+<meta name="description" content="Aplicaciones web gratuitas para analizar datos, evaluar, enseñar, crear contenido y gestionar documentos. Funcionan en el navegador, sin registro.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 rx=%228%22 fill=%22%230f3d5e%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2216%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22bold%22%3EHE%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --fondo:#f7f6f2; --tinta:#1c2430; --suave:#5d6775; --borde:#e3e1da; --blanco:#fff;
+  --azul:#0f3d5e; --acento:#d9622b;
+  --c-analizar:#2563eb; --c-evaluar:#c2410c; --c-ensenar:#7c3aed; --c-crear:#db2777; --c-documentos:#b91c1c; --c-planear:#0f766e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--tinta);background:var(--fondo);line-height:1.55}
+a{color:inherit}
+.contenedor{max-width:1160px;margin:0 auto;padding:0 20px}
+
+/* Encabezado */
+header.hero{background:var(--azul);color:#fff;padding:46px 0 40px;position:relative;overflow:hidden}
+header.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(217,98,43,.35),transparent 65%)}
+.hero .kicker{font-size:13px;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin:0 0 8px}
+.hero h1{font-size:clamp(28px,4.2vw,44px);line-height:1.15;margin:0 0 12px;max-width:760px;font-weight:750}
+.hero p{max-width:680px;margin:0;font-size:17px;opacity:.9}
+.hero .sellos{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px;position:relative;z-index:1}
+.hero .sellos span{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:20px;padding:4px 12px;font-size:13.5px}
+
+/* Intenciones (navegación) */
+.intenciones{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px;margin:-26px auto 0;position:relative;z-index:2}
+.intencion{background:var(--blanco);border:1px solid var(--borde);border-radius:12px;padding:12px 14px;text-decoration:none;display:flex;flex-direction:column;gap:2px;box-shadow:0 4px 16px rgba(15,61,94,.07);transition:transform .12s,box-shadow .12s;border-top:4px solid var(--c)}
+.intencion:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,61,94,.12)}
+.intencion .verbo{font-weight:700;font-size:15.5px}
+.intencion .para{font-size:12.5px;color:var(--suave)}
+.intencion .cuenta{font-size:12px;color:var(--c);font-weight:600;margin-top:2px}
+
+/* Filtros */
+.filtros{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:28px 0 8px;padding:12px 14px;background:var(--blanco);border:1px solid var(--borde);border-radius:12px;position:sticky;top:8px;z-index:5}
+.filtros input[type=search]{flex:1;min-width:200px;border:1px solid var(--borde);border-radius:8px;padding:8px 12px;font:inherit;background:var(--fondo)}
+.grupo-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--borde);background:var(--blanco);border-radius:20px;padding:5px 12px;font:inherit;font-size:13.5px;cursor:pointer;color:var(--tinta)}
+.chip.act{background:var(--tinta);color:#fff;border-color:var(--tinta)}
+.chk{display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--suave)}
+
+/* Secciones */
+section.cat{padding-top:30px;scroll-margin-top:80px}
+.cat-cab{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.cat-ic{width:46px;height:46px;flex-shrink:0;border-radius:12px;display:grid;place-items:center;font-size:22px;background:color-mix(in srgb,var(--c) 12%,white);color:var(--c)}
+.cat-cab h2{margin:0;font-size:22px}
+.cat-cab p{margin:2px 0 0;color:var(--suave);max-width:760px}
+.rejilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.tarjeta{background:var(--blanco);border:1px solid var(--borde);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;position:relative}
+.tarjeta.disp{border-left:4px solid var(--c)}
+.tarjeta.prox{background:#fbfaf7;border-style:dashed}
+.tarjeta .fila{display:flex;align-items:center;gap:10px}
+.tarjeta .ic{font-size:26px}
+.tarjeta h3{margin:0;font-size:17px;flex:1}
+.estado{font-size:11.5px;font-weight:700;letter-spacing:.03em;border-radius:20px;padding:2px 9px;white-space:nowrap}
+.estado.ok{background:#dcfce7;color:#166534}
+.estado.pr{background:#f1f0ea;color:#6b6b63}
+.tarjeta .que{margin:0;color:var(--tinta);font-size:14.5px}
+.tarjeta .usos{margin:0;padding-left:18px;color:var(--suave);font-size:13.5px}
+.tarjeta .usos li{margin:2px 0}
+.etiquetas{display:flex;flex-wrap:wrap;gap:5px}
+.et{font-size:11.5px;border-radius:5px;padding:1px 7px;background:var(--fondo);color:var(--suave);border:1px solid var(--borde)}
+.atajos{display:flex;flex-wrap:wrap;gap:6px}
+.atajos a{font-size:12.5px;text-decoration:none;border:1px solid var(--borde);border-radius:6px;padding:3px 8px;background:var(--fondo)}
+.atajos a:hover{border-color:var(--c);color:var(--c)}
+.botones{display:flex;gap:8px;margin-top:auto;padding-top:4px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;text-decoration:none;border-radius:8px;padding:8px 14px;font-weight:600;font-size:14px;background:var(--c);color:#fff;border:1px solid var(--c)}
+.btn:hover{filter:brightness(1.08)}
+.btn.sec{background:var(--blanco);color:var(--tinta);border-color:var(--borde);font-weight:500}
+.btn.sec:hover{border-color:var(--c);color:var(--c);filter:none}
+.prox .botones .nota{font-size:13px;color:var(--suave)}
+.vacio{display:none;text-align:center;color:var(--suave);padding:40px 10px}
+
+/* Ruta sugerida */
+.ruta{background:var(--blanco);border:1px solid var(--borde);border-radius:14px;padding:20px;margin-top:40px}
+.ruta h2{margin:0 0 4px;font-size:20px}
+.ruta>p{margin:0 0 14px;color:var(--suave)}
+.pasos{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;counter-reset:p}
+.paso{counter-increment:p;background:var(--fondo);border-radius:10px;padding:12px 14px;font-size:14px;position:relative;padding-top:34px}
+.paso::before{content:counter(p);position:absolute;top:10px;left:14px;width:20px;height:20px;border-radius:50%;background:var(--azul);color:#fff;font-size:12px;display:grid;place-items:center;font-weight:700}
+.paso b{display:block}
+.paso a{color:var(--azul);font-weight:600}
+
+footer{margin-top:50px;padding:26px 0 40px;border-top:1px solid var(--borde);color:var(--suave);font-size:14px}
+footer .col{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+@media (max-width:640px){
+  header.hero{padding:34px 0 40px}
+  .filtros{position:static}
+  .rejilla{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.intencion{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="contenedor">
+    <p class="kicker">Héctor Escamilla · Docente de matemáticas</p>
+    <h1>Herramientas digitales para enseñar, evaluar y trabajar mejor</h1>
+    <p>Aplicaciones gratuitas que funcionan directamente en el navegador, organizadas según lo que necesitas hacer.</p>
+    <div class="sellos"><span>🔒 Tus archivos y datos no salen de tu equipo</span><span>✨ Sin registro</span><span>💸 Gratis</span><span>📱 También en el celular</span></div>
+  </div>
+</header>
+
+<main class="contenedor">
+  <nav class="intenciones" id="intenciones" aria-label="¿Qué necesitas hacer?"></nav>
+
+  <div class="filtros" role="search">
+    <input type="search" id="buscar" placeholder="Buscar: «unir PDF», «chi-cuadrado», «Moodle», «firma»…" aria-label="Buscar herramienta">
+    <div class="grupo-chips" id="publico" aria-label="Filtrar por público">
+      <button class="chip act" data-p="todos">Todos</button>
+      <button class="chip" data-p="docentes">Para docentes</button>
+      <button class="chip" data-p="estudiantes">Para estudiantes</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="soloDisp"> Solo disponibles</label>
+  </div>
+
+  <div id="catalogo"></div>
+  <div class="vacio" id="vacio">No hay herramientas que coincidan con la búsqueda.</div>
+
+  <section class="ruta" aria-labelledby="rutaTit">
+    <h2 id="rutaTit">Un ciclo de evaluación con estas herramientas</h2>
+    <p>Así se conectan las herramientas a lo largo de un corte académico.</p>
+    <div class="pasos">
+      <div class="paso"><b>Diseña</b>Crea preguntas con valores aleatorios en <a href="https://hectorescamillamath.github.io/PreguntasMoodle/">PreguntasMoodle</a>.</div>
+      <div class="paso"><b>Aplica</b>Impórtalas en Moodle o imprime versiones A, B y C con su clave.</div>
+      <div class="paso"><b>Recoge</b>Une, ordena o comprime los trabajos escaneados con las <a href="https://hectorescamillamath.github.io/pdfs/">Herramientas PDF</a>.</div>
+      <div class="paso"><b>Analiza</b>Estudia los resultados del grupo en <a href="https://hectorescamillamath.github.io/statista/">EstadísticaWeb</a>.</div>
+      <div class="paso"><b>Retroalimenta</b>Comparte resultados y ajusta la siguiente evaluación.</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="contenedor col">
+    <div><b>Herramientas para docentes</b><br>Creadas por Héctor Escamilla. Código abierto en GitHub.</div>
+    <div>Todas las aplicaciones procesan la información en tu navegador:<br>no se envían datos a servidores externos.</div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   CATÁLOGO — para agregar o cambiar herramientas, edita esta lista.
+   estado: 'disponible' o 'proximamente'
+   ========================================================= */
+const BASE = 'https://hectorescamillamath.github.io/';
+
+const CATEGORIAS = [
+  { id: 'analizar',   ic: '📊', verbo: 'Analizar',   titulo: 'Analizar datos',            para: 'Comprender la información', intencion: 'Convertir datos en decisiones: describir, comparar grupos, buscar relaciones y comprobar hipótesis.' },
+  { id: 'evaluar',    ic: '📝', verbo: 'Evaluar',    titulo: 'Evaluar el aprendizaje',     para: 'Medir y retroalimentar', intencion: 'Diseñar evaluaciones justas y variadas, calificar con menos esfuerzo y dar seguimiento a cada estudiante.' },
+  { id: 'ensenar',    ic: '🧑‍🏫', verbo: 'Enseñar', titulo: 'Enseñar y explicar',         para: 'Hacer visible lo abstracto', intencion: 'Apoyar la explicación en clase con visualizaciones interactivas y dinámicas para el aula.' },
+  { id: 'crear',      ic: '🎬', verbo: 'Crear',      titulo: 'Crear contenido',            para: 'Producir material propio', intencion: 'Producir videos y recursos de calidad con menos tiempo de preparación.' },
+  { id: 'documentos', ic: '📄', verbo: 'Gestionar',  titulo: 'Gestionar documentos',       para: 'Resolver trámites rápido', intencion: 'Resolver tareas cotidianas con archivos sin pagar suscripciones ni subir documentos a internet.' },
+  { id: 'planear',    ic: '🗓', verbo: 'Planear',    titulo: 'Planear y organizar',        para: 'Ordenar el semestre', intencion: 'Organizar el curso y los recursos para no empezar de cero cada semestre.' }
+];
+
+const HERRAMIENTAS = [
+  {
+    cat: 'analizar', ic: '📈', nombre: 'EstadísticaWeb', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'statista/', ayuda: BASE + 'statista/manual.html',
+    que: 'Análisis estadístico al estilo SPSS, con interpretación de cada resultado en lenguaje sencillo y en formato APA.',
+    usos: ['Analizar notas y encuestas de un curso', 'Enseñar estadística con datos reales', 'Trabajos de investigación de los estudiantes'],
+    etiquetas: ['descriptivos', 'prueba t', 'ANOVA', 'chi-cuadrado', 'correlación', 'regresión', 'Cronbach', 'no paramétricas', 'gráficos', 'SPSS', 'Excel', 'CSV']
+  },
+  {
+    cat: 'evaluar', ic: '❓', nombre: 'PreguntasMoodle', estado: 'disponible', publico: ['docentes'],
+    url: BASE + 'PreguntasMoodle/', ayuda: BASE + 'PreguntasMoodle/ayuda.html',
+    que: 'Generador de preguntas con valores aleatorios: cada estudiante recibe una versión distinta.',
+    usos: ['Quices y parciales en Moodle (XML)', 'Exámenes impresos con versiones A, B, C y clave', 'Bancos de preguntas reutilizables'],
+    etiquetas: ['Moodle', 'XML', 'banco de preguntas', 'opción múltiple', 'numérica', 'LaTeX', 'examen', 'quiz']
+  },
+  {
+    cat: 'evaluar', ic: '📒', nombre: 'Libro de calificaciones', estado: 'proximamente', publico: ['docentes'],
+    que: 'Notas por cortes con porcentajes, definitivas automáticas y la nota que necesita cada estudiante para aprobar.',
+    usos: ['Cierre de cortes', 'Seguimiento de estudiantes en riesgo', 'Estadísticas del grupo'],
+    etiquetas: ['notas', 'calificaciones', 'definitiva', 'Excel']
+  },
+  {
+    cat: 'evaluar', ic: '🧾', nombre: 'Generador de talleres', estado: 'proximamente', publico: ['docentes'],
+    que: 'Talleres y guías imprimibles con ejercicios distintos para cada estudiante y su solucionario.',
+    usos: ['Talleres en clase', 'Tareas individuales', 'Práctica antes de un parcial'],
+    etiquetas: ['taller', 'guía', 'ejercicios', 'solucionario', 'PDF']
+  },
+  {
+    cat: 'ensenar', ic: '🧊', nombre: 'Graficador 3D', estado: 'proximamente', publico: ['docentes', 'estudiantes'],
+    que: 'Superficies, curvas de nivel, gradientes y planos tangentes interactivos para cálculo multivariado.',
+    usos: ['Explicar funciones de dos variables', 'Visualizar derivadas parciales', 'Exploración autónoma de los estudiantes'],
+    etiquetas: ['cálculo multivariado', 'superficies', 'curvas de nivel', 'gradiente', '3D']
+  },
+  {
+    cat: 'ensenar', ic: '⏱', nombre: 'Herramientas para el aula', estado: 'proximamente', publico: ['docentes'],
+    que: 'Temporizador, selector aleatorio de estudiantes, armado de grupos y ruleta de preguntas para proyectar en clase.',
+    usos: ['Actividades con tiempo', 'Participación equitativa', 'Trabajo en grupos'],
+    etiquetas: ['temporizador', 'grupos', 'aleatorio', 'participación', 'clase']
+  },
+  {
+    cat: 'crear', ic: '🎙', nombre: 'Teleprompter', estado: 'proximamente', publico: ['docentes'],
+    que: 'Lee tu libreto mientras grabas, con velocidad y tamaño ajustables y control por teclado.',
+    usos: ['Grabar videos de clase', 'Videos para YouTube', 'Presentaciones'],
+    etiquetas: ['video', 'libreto', 'grabación', 'YouTube']
+  },
+  {
+    cat: 'documentos', ic: '🧰', nombre: 'Herramientas PDF', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'pdfs/', ayuda: BASE + 'pdfs/ayuda.html',
+    que: 'Nueve herramientas para PDF que funcionan sin subir tus archivos: unir, dividir, comprimir, firmar y más.',
+    usos: ['Entregar trabajos en un solo PDF', 'Reducir el tamaño para subirlo a una plataforma', 'Firmar documentos'],
+    atajos: [['Unir', 'unir'], ['Organizar', 'organizar'], ['Dividir', 'dividir'], ['Comprimir', 'comprimir'], ['Imágenes a PDF', 'imagenes'], ['PDF a imágenes', 'aimagen'], ['Numerar', 'numerar'], ['Marca de agua', 'marca'], ['Firmar', 'firmar']],
+    etiquetas: ['PDF', 'unir', 'dividir', 'comprimir', 'firma', 'imágenes', 'JPG', 'escaneo', 'marca de agua', 'numerar']
+  },
+  {
+    cat: 'planear', ic: '🗂', nombre: 'Planeador de clases', estado: 'proximamente', publico: ['docentes'],
+    que: 'Planeación semana a semana con temas, objetivos, recursos y evaluaciones, exportable al formato institucional.',
+    usos: ['Sílabo del semestre', 'Reutilizar la planeación', 'Compartir con coordinación'],
+    etiquetas: ['planeación', 'sílabo', 'semestre', 'objetivos']
+  },
+  {
+    cat: 'planear', ic: '🔎', nombre: 'Banco de recursos', estado: 'proximamente', publico: ['docentes', 'estudiantes'],
+    que: 'Buscador de tus materiales (videos, guías, applets y quices) por tema, curso y nivel.',
+    usos: ['Encontrar material rápido', 'Recomendar recursos a estudiantes', 'Organizar varios cursos'],
+    etiquetas: ['recursos', 'videos', 'guías', 'buscador', 'razonamiento cuantitativo', 'cálculo']
+  }
+];
+
+/* ---------- interfaz ---------- */
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+const color = id => `var(--c-${id})`;
+let publico = 'todos';
+
+document.getElementById('intenciones').innerHTML = CATEGORIAS.map(c => {
+  const n = HERRAMIENTAS.filter(h => h.cat === c.id).length, d = HERRAMIENTAS.filter(h => h.cat === c.id && h.estado === 'disponible').length;
+  return `<a class="intencion" href="#${c.id}" style="--c:${color(c.id)}"><span class="verbo">${c.ic} ${c.verbo}</span><span class="para">${esc(c.para)}</span><span class="cuenta">${d ? `${d} disponible${d > 1 ? 's' : ''}` : 'Próximamente'}${n > d && d ? ` · ${n - d} en camino` : ''}</span></a>`;
+}).join('');
+
+function tarjeta(h) {
+  const disp = h.estado === 'disponible';
+  return `<article class="tarjeta ${disp ? 'disp' : 'prox'}" style="--c:${color(h.cat)}">
+    <div class="fila"><span class="ic" aria-hidden="true">${h.ic}</span><h3>${esc(h.nombre)}</h3><span class="estado ${disp ? 'ok' : 'pr'}">${disp ? 'Disponible' : 'Próximamente'}</span></div>
+    <p class="que">${esc(h.que)}</p>
+    <ul class="usos">${h.usos.map(u => `<li>${esc(u)}</li>`).join('')}</ul>
+    ${h.atajos && disp ? `<div class="atajos">${h.atajos.map(([t, a]) => `<a href="${h.url}#${a}">${esc(t)}</a>`).join('')}</div>` : ''}
+    <div class="etiquetas">${h.publico.map(p => `<span class="et">${p === 'docentes' ? '👩‍🏫 Docentes' : '🎓 Estudiantes'}</span>`).join('')}</div>
+    <div class="botones">${disp ? `<a class="btn" href="${h.url}">Abrir</a>${h.ayuda ? `<a class="btn sec" href="${h.ayuda}">📘 Manual</a>` : ''}` : '<span class="nota">En desarrollo</span>'}</div>
+  </article>`;
+}
+
+function pintar() {
+  const q = norm(document.getElementById('buscar').value.trim());
+  const solo = document.getElementById('soloDisp').checked;
+  let total = 0;
+  document.getElementById('catalogo').innerHTML = CATEGORIAS.map(c => {
+    const hs = HERRAMIENTAS.filter(h => h.cat === c.id)
+      .filter(h => publico === 'todos' || h.publico.includes(publico))
+      .filter(h => !solo || h.estado === 'disponible')
+      .filter(h => !q || norm([h.nombre, h.que, ...h.usos, ...h.etiquetas, ...(h.atajos || []).map(a => a[0]), c.titulo].join(' ')).includes(q))
+      .sort((a, b) => (a.estado === 'disponible' ? 0 : 1) - (b.estado === 'disponible' ? 0 : 1));
+    total += hs.length;
+    if (!hs.length) return '';
+    return `<section class="cat" id="${c.id}" style="--c:${color(c.id)}"><div class="cat-cab"><span class="cat-ic" aria-hidden="true">${c.ic}</span><div><h2>${esc(c.titulo)}</h2><p>${esc(c.intencion)}</p></div></div><div class="rejilla">${hs.map(tarjeta).join('')}</div></section>`;
+  }).join('');
+  document.getElementById('vacio').style.display = total ? 'none' : 'block';
+}
+document.getElementById('buscar').addEventListener('input', pintar);
+document.getElementById('soloDisp').addEventListener('change', pintar);
+document.querySelectorAll('#publico .chip').forEach(b => b.onclick = () => {
+  publico = b.dataset.p;
+  document.querySelectorAll('#publico .chip').forEach(x => x.classList.toggle('act', x === b));
+  pintar();
+});
+pintar();
+</script>
+</body>
+</html>
