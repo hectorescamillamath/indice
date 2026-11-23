@@ -10,7 +10,7 @@
 :root{
   --fondo:#f7f6f2; --tinta:#1c2430; --suave:#5d6775; --borde:#e3e1da; --blanco:#fff;
   --azul:#0f3d5e; --acento:#d9622b;
-  --c-analizar:#2563eb; --c-evaluar:#c2410c; --c-ensenar:#7c3aed; --c-crear:#db2777; --c-documentos:#b91c1c; --c-planear:#0f766e;
+  --c-analizar:#2563eb; --c-evaluar:#c2410c; --c-ensenar:#7c3aed; --c-crear:#db2777; --c-documentos:#b91c1c; --c-planear:#0f766e; --c-practicar:#ca8a04;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -94,6 +94,21 @@ footer .col{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
   .rejilla{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.intencion{transition:none}}
+
+/* Directorio */
+.tabla-wrap{background:var(--blanco);border:1px solid var(--borde);border-radius:14px;overflow:auto}
+table.dir{border-collapse:collapse;width:100%;font-size:14px}
+table.dir th,table.dir td{padding:9px 12px;border-bottom:1px solid var(--borde);text-align:left;vertical-align:top}
+table.dir th{background:#f1efe9;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--suave);position:sticky;top:0}
+table.dir tr:last-child td{border-bottom:0}
+table.dir tr:hover td{background:#faf9f5}
+table.dir .rep{font-family:ui-monospace,Consolas,monospace;font-size:13px;font-weight:600;white-space:nowrap}
+table.dir .fecha{white-space:nowrap;color:var(--suave);font-size:13px}
+table.dir .enl{white-space:nowrap}
+table.dir .enl a{display:inline-block;text-decoration:none;border:1px solid var(--borde);border-radius:6px;padding:2px 9px;font-size:13px;margin:0 4px 4px 0;background:var(--fondo)}
+table.dir .enl a:hover{border-color:var(--azul);color:var(--azul)}
+table.dir .vac{color:var(--suave);font-style:italic}
+@media (max-width:640px){table.dir .fecha{display:none}table.dir th:nth-child(3){display:none}}
 </style>
 </head>
 <body>
@@ -122,6 +137,11 @@ footer .col{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
   <div id="catalogo"></div>
   <div class="vacio" id="vacio">No hay herramientas que coincidan con la búsqueda.</div>
+
+  <section class="cat directorio" id="directorio" style="--c:var(--azul)">
+    <div class="cat-cab"><span class="cat-ic" aria-hidden="true">🗃</span><div><h2>Todos mis repositorios</h2><p>Acceso directo a cada repositorio: el sitio publicado y el código en GitHub. Ordenados del más reciente al más antiguo.</p></div></div>
+    <div class="tabla-wrap"><table class="dir"><thead><tr><th>Repositorio</th><th>Qué es</th><th>Actualizado</th><th>Abrir</th></tr></thead><tbody id="tablaRepos"></tbody></table></div>
+  </section>
 
   <section class="ruta" aria-labelledby="rutaTit">
     <h2 id="rutaTit">Un ciclo de evaluación con estas herramientas</h2>
@@ -154,6 +174,7 @@ const CATEGORIAS = [
   { id: 'analizar',   ic: '📊', verbo: 'Analizar',   titulo: 'Analizar datos',            para: 'Comprender la información', intencion: 'Convertir datos en decisiones: describir, comparar grupos, buscar relaciones y comprobar hipótesis.' },
   { id: 'evaluar',    ic: '📝', verbo: 'Evaluar',    titulo: 'Evaluar el aprendizaje',     para: 'Medir y retroalimentar', intencion: 'Diseñar evaluaciones justas y variadas, calificar con menos esfuerzo y dar seguimiento a cada estudiante.' },
   { id: 'ensenar',    ic: '🧑‍🏫', verbo: 'Enseñar', titulo: 'Enseñar y explicar',         para: 'Hacer visible lo abstracto', intencion: 'Apoyar la explicación en clase con visualizaciones interactivas y dinámicas para el aula.' },
+  { id: 'practicar',  ic: '🎮', verbo: 'Practicar',  titulo: 'Practicar jugando',          para: 'Aprender con retos y juegos', intencion: 'Ejercitar el cálculo y los conceptos con juegos, retos de agilidad y material manipulable digital.' },
   { id: 'crear',      ic: '🎬', verbo: 'Crear',      titulo: 'Crear contenido',            para: 'Producir material propio', intencion: 'Producir videos y recursos de calidad con menos tiempo de preparación.' },
   { id: 'documentos', ic: '📄', verbo: 'Gestionar',  titulo: 'Gestionar documentos',       para: 'Resolver trámites rápido', intencion: 'Resolver tareas cotidianas con archivos sin pagar suscripciones ni subir documentos a internet.' },
   { id: 'planear',    ic: '🗓', verbo: 'Planear',    titulo: 'Planear y organizar',        para: 'Ordenar el semestre', intencion: 'Organizar el curso y los recursos para no empezar de cero cada semestre.' }
@@ -199,10 +220,90 @@ const HERRAMIENTAS = [
     etiquetas: ['temporizador', 'grupos', 'aleatorio', 'participación', 'clase']
   },
   {
-    cat: 'crear', ic: '🎙', nombre: 'Teleprompter', estado: 'proximamente', publico: ['docentes'],
-    que: 'Lee tu libreto mientras grabas, con velocidad y tamaño ajustables y control por teclado.',
-    usos: ['Grabar videos de clase', 'Videos para YouTube', 'Presentaciones'],
-    etiquetas: ['video', 'libreto', 'grabación', 'YouTube']
+    cat: 'crear', ic: '🎙', nombre: 'Libretos', estado: 'disponible', publico: ['docentes'],
+    url: BASE + 'libretos/',
+    que: 'Lector de libretos para el celular: abre los libretos (.md) de las videoclases y avanza a medida que los lees en voz alta.',
+    usos: ['Grabar videoclases', 'Videos para YouTube', 'Se instala en el celular como una app'],
+    etiquetas: ['teleprompter', 'video', 'libreto', 'grabación', 'YouTube', 'Manim', 'PWA']
+  },
+  {
+    cat: 'crear', ic: '📚', nombre: 'El Arte de Trabajar con Claude', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'guia-claude/',
+    que: 'Guía en formato libro sobre cómo trabajar con Claude.',
+    usos: ['Aprender a usar la inteligencia artificial', 'Compartir con colegas'],
+    etiquetas: ['guía', 'Claude', 'inteligencia artificial', 'libro']
+  },
+  {
+    cat: 'evaluar', ic: '🎓', nombre: 'Portal de Calificaciones', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'calificaciones2026/',
+    que: 'Portal de consulta de calificaciones 2026.',
+    usos: ['Consulta de notas', 'Seguimiento del curso'],
+    etiquetas: ['calificaciones', 'notas', '2026']
+  },
+  {
+    cat: 'ensenar', ic: '⚖', nombre: 'Balanza de dos brazos', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'balanza1/',
+    que: 'Balanza interactiva de dos brazos para trabajar el equilibrio y la igualdad.',
+    usos: ['Introducir ecuaciones con la idea de equilibrio', 'Actividad manipulable en clase'],
+    etiquetas: ['balanza', 'ecuaciones', 'igualdad', 'equilibrio']
+  },
+  {
+    cat: 'ensenar', ic: '〰', nombre: 'ONDA — Monitor de señal', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'ondas/',
+    que: 'Monitor que muestra en tiempo real la onda de la señal de audio captada por el micrófono.',
+    usos: ['Visualizar funciones periódicas y ondas', 'Relacionar el sonido con la trigonometría'],
+    etiquetas: ['ondas', 'sonido', 'audio', 'trigonometría', 'física', 'seno']
+  },
+  {
+    cat: 'practicar', ic: '🧠', nombre: 'RufinoMath — Agilidad mental', estado: 'disponible', publico: ['estudiantes'],
+    url: BASE,
+    que: 'Plataforma de agilidad mental con desafíos de aritmética, potencias y raíces.',
+    usos: ['Calentamiento al inicio de la clase', 'Práctica autónoma de cálculo mental'],
+    atajos: [['Versión principal', BASE], ['rufinomath2026', BASE + 'rufinomath2026/'], ['escamillamath', BASE + 'escamillamath.github.io/']],
+    etiquetas: ['agilidad mental', 'cálculo mental', 'aritmética', 'potencias', 'raíces', 'Rufino']
+  },
+  {
+    cat: 'practicar', ic: '➗', nombre: 'RufinoMathDigital', estado: 'disponible', publico: ['estudiantes'],
+    url: BASE + 'RufinoMathDigital/',
+    que: 'Sesiones de práctica de operaciones con nombre del estudiante, duración configurable y resumen al finalizar.',
+    usos: ['Práctica cronometrada de operaciones', 'Registro de la sesión de cada estudiante'],
+    atajos: [['Versión 1', BASE + 'RufinoMathDigital/'], ['Versión 2', BASE + 'mathdigital2/'], ['Versión 3', BASE + 'MathDigital3/'], ['md3', BASE + 'md3/']],
+    etiquetas: ['operaciones', 'práctica', 'cálculo', 'Rufino']
+  },
+  {
+    cat: 'practicar', ic: '🍎', nombre: 'FrutiFracciones', estado: 'disponible', publico: ['estudiantes'],
+    url: BASE + 'fraccionesfrutales/',
+    que: 'Aprende a sumar, restar, multiplicar y dividir fracciones con frutas cortadas en partes iguales.',
+    usos: ['Introducir operaciones con fracciones', 'Práctica visual para primaria y bachillerato'],
+    etiquetas: ['fracciones', 'suma', 'resta', 'multiplicación', 'división', 'frutas']
+  },
+  {
+    cat: 'practicar', ic: '💰', nombre: '¿Quién quiere ser trigonométrico?', estado: 'disponible', publico: ['estudiantes'],
+    url: BASE + 'qqstrigonometrico/',
+    que: 'Concurso de preguntas al estilo «¿Quién quiere ser millonario?», con escalera de premios y preguntas al azar.',
+    usos: ['Repaso de trigonometría en grupo', 'Cierre de unidad con dinámica de juego'],
+    etiquetas: ['trigonometría', 'juego', 'concurso', 'repaso', 'millonario']
+  },
+  {
+    cat: 'practicar', ic: '🎲', nombre: '¡Matemáticas Divertidas!', estado: 'disponible', publico: ['estudiantes'],
+    url: BASE + 'LuciayGabriel/',
+    que: 'Juego de matemáticas para niños con selección de jugador.',
+    usos: ['Práctica de matemáticas en casa'],
+    etiquetas: ['niños', 'juego', 'matemáticas divertidas']
+  },
+  {
+    cat: 'planear', ic: '🏫', nombre: 'Aula virtual Matemáticas 10° RJC', estado: 'disponible', publico: ['docentes', 'estudiantes'],
+    url: BASE + 'Matematicas2026RJC/',
+    que: 'Aula virtual del curso de Matemáticas 10° conectada con Google Sheets para notas y contenidos.',
+    usos: ['Publicar contenidos del curso', 'Consultar notas de estudiantes'],
+    etiquetas: ['aula virtual', 'grado 10', 'Google Sheets', 'RJC', 'curso']
+  },
+  {
+    cat: 'documentos', ic: '🎤', nombre: 'Actas de reunión', estado: 'disponible', publico: ['docentes'],
+    url: BASE + 'Trancripci-n/',
+    que: 'Graba una reunión desde el navegador, la transcribe identificando a quién habla y exporta el acta con marcas de tiempo.',
+    usos: ['Actas de reuniones de área o de consejo', 'Transcribir entrevistas'],
+    etiquetas: ['transcripción', 'acta', 'reunión', 'audio', 'Whisper']
   },
   {
     cat: 'documentos', ic: '🧰', nombre: 'Herramientas PDF', estado: 'disponible', publico: ['docentes', 'estudiantes'],
@@ -226,6 +327,48 @@ const HERRAMIENTAS = [
   }
 ];
 
+
+/* ---------- Directorio de todos los repositorios ----------
+   [nombre del repositorio, descripción, fecha de última actualización, ¿tiene sitio web?] */
+const REPOS = [
+  ['indice', 'Este portal de herramientas', '2026-11-23', true],
+  ['pdfs', 'Herramientas PDF (unir, dividir, comprimir, firmar…)', '2026-11-23', true],
+  ['PreguntasMoodle', 'Generador de preguntas aleatorias para Moodle', '2026-11-23', true],
+  ['statista', 'EstadísticaWeb: análisis estadístico tipo SPSS', '2026-11-21', true],
+  ['guia-claude', 'Guía «El Arte de Trabajar con Claude»', '2026-11-19', true],
+  ['libretos', 'Lector de libretos para grabar videoclases', '2026-11-18', true],
+  ['balanza1', 'Balanza de dos brazos interactiva', '2026-11-10', true],
+  ['Matematicas2026RJC', 'Aula virtual Matemáticas 10° RJC', '2026-10-26', true],
+  ['fraccionesfrutales', 'FrutiFracciones: operaciones con fracciones', '2026-10-09', true],
+  ['Trancripci-n', 'Actas de reunión con transcripción', '2026-09-24', true],
+  ['calificaciones2026', 'Portal de Calificaciones 2026', '2026-08-26', true],
+  ['ondas', 'ONDA: monitor de señal de audio', '2026-08-24', true],
+  ['qqstrigonometrico', '¿Quién quiere ser trigonométrico?', '2026-08-21', true],
+  ['LuciayGabriel', '¡Matemáticas Divertidas! (juego infantil)', '2026-05-31', true],
+  ['AngelyGabo', 'Repositorio vacío', '2026-05-31', false],
+  ['md3', 'RufinoMathDigital (versión md3)', '2026-03-16', true],
+  ['MathDigital3', 'RufinoMathDigital (versión 3)', '2026-03-16', true],
+  ['mathdigital2', 'RufinoMathDigital (versión 2)', '2026-02-27', true],
+  ['RufinoMathDigital', 'RufinoMathDigital (versión 1)', '2026-02-19', true],
+  ['hectorescamillamath', 'RufinoMath: agilidad mental (copia)', '2026-02-19', true],
+  ['rufinomath2026', 'RufinoMath: agilidad mental', '2026-02-19', true],
+  ['Hescamilla2026', 'Repositorio vacío', '2026-02-10', false],
+  ['escamillamath.github.io', 'RufinoMath: agilidad mental (copia)', '2026-02-10', true],
+  ['hectorescamillamath.github.io', 'Sitio principal: RufinoMath', '2026-02-10', true],
+  ['docs', 'Plantilla de documentación (Mintlify)', '2025-10-20', false]
+];
+const GH = 'https://github.com/hectorescamillamath/';
+const fechaCorta = f => new Date(f + 'T12:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
+function pintarRepos(q) {
+  const filas = REPOS.filter(([n, d]) => !q || norm(n + ' ' + d).includes(q));
+  document.getElementById('tablaRepos').innerHTML = filas.map(([n, d, f, sitio]) => {
+    const url = n === 'hectorescamillamath.github.io' ? BASE : BASE + n + '/';
+    return `<tr><td class="rep">${esc(n)}</td><td class="${sitio ? '' : 'vac'}">${esc(d)}</td><td class="fecha">${fechaCorta(f)}</td>
+      <td class="enl">${sitio ? `<a href="${url}">🌐 Sitio</a>` : ''}<a href="${GH + n}">⌨ Código</a></td></tr>`;
+  }).join('') || '<tr><td colspan="4" class="vac">Ningún repositorio coincide con la búsqueda.</td></tr>';
+  document.getElementById('directorio').style.display = filas.length || !q ? '' : 'none';
+}
+
 /* ---------- interfaz ---------- */
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
@@ -235,7 +378,7 @@ let publico = 'todos';
 document.getElementById('intenciones').innerHTML = CATEGORIAS.map(c => {
   const n = HERRAMIENTAS.filter(h => h.cat === c.id).length, d = HERRAMIENTAS.filter(h => h.cat === c.id && h.estado === 'disponible').length;
   return `<a class="intencion" href="#${c.id}" style="--c:${color(c.id)}"><span class="verbo">${c.ic} ${c.verbo}</span><span class="para">${esc(c.para)}</span><span class="cuenta">${d ? `${d} disponible${d > 1 ? 's' : ''}` : 'Próximamente'}${n > d && d ? ` · ${n - d} en camino` : ''}</span></a>`;
-}).join('');
+}).join('') + `<a class="intencion" href="#directorio" style="--c:var(--azul)"><span class="verbo">🗃 Todo</span><span class="para">Todos los repositorios</span><span class="cuenta">${REPOS.length} repositorios</span></a>`;
 
 function tarjeta(h) {
   const disp = h.estado === 'disponible';
@@ -243,7 +386,7 @@ function tarjeta(h) {
     <div class="fila"><span class="ic" aria-hidden="true">${h.ic}</span><h3>${esc(h.nombre)}</h3><span class="estado ${disp ? 'ok' : 'pr'}">${disp ? 'Disponible' : 'Próximamente'}</span></div>
     <p class="que">${esc(h.que)}</p>
     <ul class="usos">${h.usos.map(u => `<li>${esc(u)}</li>`).join('')}</ul>
-    ${h.atajos && disp ? `<div class="atajos">${h.atajos.map(([t, a]) => `<a href="${h.url}#${a}">${esc(t)}</a>`).join('')}</div>` : ''}
+    ${h.atajos && disp ? `<div class="atajos">${h.atajos.map(([t, a]) => `<a href="${/^https?:/.test(a) ? a : h.url + '#' + a}">${esc(t)}</a>`).join('')}</div>` : ''}
     <div class="etiquetas">${h.publico.map(p => `<span class="et">${p === 'docentes' ? '👩‍🏫 Docentes' : '🎓 Estudiantes'}</span>`).join('')}</div>
     <div class="botones">${disp ? `<a class="btn" href="${h.url}">Abrir</a>${h.ayuda ? `<a class="btn sec" href="${h.ayuda}">📘 Manual</a>` : ''}` : '<span class="nota">En desarrollo</span>'}</div>
   </article>`;
@@ -264,6 +407,7 @@ function pintar() {
     return `<section class="cat" id="${c.id}" style="--c:${color(c.id)}"><div class="cat-cab"><span class="cat-ic" aria-hidden="true">${c.ic}</span><div><h2>${esc(c.titulo)}</h2><p>${esc(c.intencion)}</p></div></div><div class="rejilla">${hs.map(tarjeta).join('')}</div></section>`;
   }).join('');
   document.getElementById('vacio').style.display = total ? 'none' : 'block';
+  pintarRepos(q);
 }
 document.getElementById('buscar').addEventListener('input', pintar);
 document.getElementById('soloDisp').addEventListener('change', pintar);
