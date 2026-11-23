@@ -255,14 +255,6 @@ const HERRAMIENTAS = [
     etiquetas: ['ondas', 'sonido', 'audio', 'trigonometría', 'física', 'seno']
   },
   {
-    cat: 'practicar', ic: '🧠', nombre: 'RufinoMath — Agilidad mental', estado: 'disponible', publico: ['estudiantes'],
-    url: BASE,
-    que: 'Plataforma de agilidad mental con desafíos de aritmética, potencias y raíces.',
-    usos: ['Calentamiento al inicio de la clase', 'Práctica autónoma de cálculo mental'],
-    atajos: [['Versión principal', BASE], ['rufinomath2026', BASE + 'rufinomath2026/'], ['escamillamath', BASE + 'escamillamath.github.io/']],
-    etiquetas: ['agilidad mental', 'cálculo mental', 'aritmética', 'potencias', 'raíces', 'Rufino']
-  },
-  {
     cat: 'practicar', ic: '➗', nombre: 'RufinoMathDigital', estado: 'disponible', publico: ['estudiantes'],
     url: BASE + 'RufinoMathDigital/',
     que: 'Sesiones de práctica de operaciones con nombre del estudiante, duración configurable y resumen al finalizar.',
@@ -299,13 +291,6 @@ const HERRAMIENTAS = [
     etiquetas: ['aula virtual', 'grado 10', 'Google Sheets', 'RJC', 'curso']
   },
   {
-    cat: 'documentos', ic: '🎤', nombre: 'Actas de reunión', estado: 'disponible', publico: ['docentes'],
-    url: BASE + 'Trancripci-n/',
-    que: 'Graba una reunión desde el navegador, la transcribe identificando a quién habla y exporta el acta con marcas de tiempo.',
-    usos: ['Actas de reuniones de área o de consejo', 'Transcribir entrevistas'],
-    etiquetas: ['transcripción', 'acta', 'reunión', 'audio', 'Whisper']
-  },
-  {
     cat: 'documentos', ic: '🧰', nombre: 'Herramientas PDF', estado: 'disponible', publico: ['docentes', 'estudiantes'],
     url: BASE + 'pdfs/', ayuda: BASE + 'pdfs/ayuda.html',
     que: 'Nueve herramientas para PDF que funcionan sin subir tus archivos: unir, dividir, comprimir, firmar y más.',
@@ -339,30 +324,22 @@ const REPOS = [
   ['libretos', 'Lector de libretos para grabar videoclases', '2026-11-18', true],
   ['balanza1', 'Balanza de dos brazos interactiva', '2026-11-10', true],
   ['Matematicas2026RJC', 'Aula virtual Matemáticas 10° RJC', '2026-10-26', true],
-  ['fraccionesfrutales', 'FrutiFracciones: operaciones con fracciones', '2026-10-09', true],
-  ['Trancripci-n', 'Actas de reunión con transcripción', '2026-09-24', true],
+  ['fraccionesfrutales', 'FrutiFracciones: operaciones con fracciones', '2026-10-09', true],,
   ['calificaciones2026', 'Portal de Calificaciones 2026', '2026-08-26', true],
   ['ondas', 'ONDA: monitor de señal de audio', '2026-08-24', true],
   ['qqstrigonometrico', '¿Quién quiere ser trigonométrico?', '2026-08-21', true],
-  ['LuciayGabriel', '¡Matemáticas Divertidas! (juego infantil)', '2026-05-31', true],
-  ['AngelyGabo', 'Repositorio vacío', '2026-05-31', false],
+  ['LuciayGabriel', '¡Matemáticas Divertidas! (juego infantil)', '2026-05-31', true],,
   ['md3', 'RufinoMathDigital (versión md3)', '2026-03-16', true],
   ['MathDigital3', 'RufinoMathDigital (versión 3)', '2026-03-16', true],
   ['mathdigital2', 'RufinoMathDigital (versión 2)', '2026-02-27', true],
-  ['RufinoMathDigital', 'RufinoMathDigital (versión 1)', '2026-02-19', true],
-  ['hectorescamillamath', 'RufinoMath: agilidad mental (copia)', '2026-02-19', true],
-  ['rufinomath2026', 'RufinoMath: agilidad mental', '2026-02-19', true],
-  ['Hescamilla2026', 'Repositorio vacío', '2026-02-10', false],
-  ['escamillamath.github.io', 'RufinoMath: agilidad mental (copia)', '2026-02-10', true],
-  ['hectorescamillamath.github.io', 'Sitio principal: RufinoMath', '2026-02-10', true],
-  ['docs', 'Plantilla de documentación (Mintlify)', '2025-10-20', false]
+  ['RufinoMathDigital', 'RufinoMathDigital (versión 1)', '2026-02-19', true],,,,,
 ];
 const GH = 'https://github.com/hectorescamillamath/';
 const fechaCorta = f => new Date(f + 'T12:00:00').toLocaleDateString('es-CO', { day: 'numeric', month: 'short', year: 'numeric' });
 function pintarRepos(q) {
   const filas = REPOS.filter(([n, d]) => !q || norm(n + ' ' + d).includes(q));
   document.getElementById('tablaRepos').innerHTML = filas.map(([n, d, f, sitio]) => {
-    const url = n === 'hectorescamillamath.github.io' ? BASE : BASE + n + '/';
+    const url = BASE + n + '/';
     return `<tr><td class="rep">${esc(n)}</td><td class="${sitio ? '' : 'vac'}">${esc(d)}</td><td class="fecha">${fechaCorta(f)}</td>
       <td class="enl">${sitio ? `<a href="${url}">🌐 Sitio</a>` : ''}<a href="${GH + n}">⌨ Código</a></td></tr>`;
   }).join('') || '<tr><td colspan="4" class="vac">Ningún repositorio coincide con la búsqueda.</td></tr>';
